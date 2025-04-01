@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  command-service:
+    build:
+      context: ./command-service
+      dockerfile: DockerFile
+    container_name: command-service
+    restart: always
+    depends_on:
+      - mysql
+      - rabbitmq
+    environment:
+      - APP_ENV=local
+      - DB_HOST=mysql
+      - DB_DATABASE=command_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    ports:
+      - "8001:8000"
+    networks:
+      - cqrs-network
+
+  query-service:
+    build:
+      context: ./query-service
+      dockerfile: DockerFile
+    container_name: query-service
+    restart: always
+    depends_on:
+      - mysql
+      - rabbitmq
+    environment:
+      - APP_ENV=local
+      - DB_HOST=mysql
+      - DB_DATABASE=query_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    ports:
+      - "8002:8000"
+    networks:
+      - cqrs-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: command_db
+    ports:
+      - "3306:3306"
+    networks:
+      - cqrs-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - cqrs-network
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+networks:
+  cqrs-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
