@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    depends_on:
+      - command-service
+      - query-service
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - cqrs-network
+
   command-service:
     build:
       context: ./command-service
@@ -9,17 +23,22 @@ services:
     restart: always
     depends_on:
       - mysql
+      - redis
       - rabbitmq
     environment:
       - APP_ENV=local
       - DB_HOST=mysql
-      - DB_DATABASE=command_db
+      - DB_DATABASE=payments_db
       - DB_USERNAME=root
       - DB_PASSWORD=root
-    ports:
-      - "8001:8000"
+      - CACHE_DRIVER=redis
+      - QUEUE_CONNECTION=redis
     networks:
       - cqrs-network
+    volumes:
+      - ./command-service:/var/www
+      - ./command-service/storage:/var/www/storage
+      - ./command-service/vendor:/var/www/vendor
 
   query-service:
     build:
@@ -29,17 +48,21 @@ services:
     restart: always
     depends_on:
       - mysql
+      - redis
       - rabbitmq
     environment:
       - APP_ENV=local
       - DB_HOST=mysql
-      - DB_DATABASE=query_db
+      - DB_DATABASE=payments_db
       - DB_USERNAME=root
       - DB_PASSWORD=root
-    ports:
-      - "8002:8000"
+      - CACHE_DRIVER=redis
     networks:
       - cqrs-network
+    volumes:
+      - ./query-service:/var/www
+      - ./query-service/storage:/var/www/storage
+      - ./query-service/vendor:/var/www/vendor
 
   mysql:
     image: mysql:8.0
@@ -47,13 +70,24 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: command_db
+      MYSQL_DATABASE: payments_db
     ports:
       - "3306:3306"
     networks:
       - cqrs-network
     volumes:
       - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - cqrs-network
+    volumes:
+      - redis_data:/data
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -74,3 +108,4 @@ networks:
 
 volumes:
   mysql_data:
+  redis_data:

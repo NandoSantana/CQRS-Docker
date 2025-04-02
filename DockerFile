@@ -20,16 +20,16 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
 # Copiar arquivos do projeto
-COPY . .
+# COPY . .
 
 # Instalar dependências do Laravel
-RUN composer install --no-dev --optimize-autoloader
+# RUN composer install --no-dev --optimize-autoloader
 
 # Definir permissões para o Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache
+# RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Expor a porta do Apache
 EXPOSE 8000
 
 # Iniciar o Laravel com Apache
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
