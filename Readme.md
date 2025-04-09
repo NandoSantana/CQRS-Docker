@@ -1,4 +1,4 @@
-# Plataforma de Pagamentos Simplificada
+# O que é?
 
 Este projeto implementa uma plataforma de pagamentos com arquitetura **CQRS** (Command Query Responsibility Segregation), utilizando **Laravel**, **Docker** e **RabbitMQ**.
 
