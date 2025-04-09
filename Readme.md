@@ -19,11 +19,16 @@ Este projeto implementa uma plataforma de pagamentos com arquitetura **CQRS** (C
 ## 🧱 Estrutura do Projeto
 
 
-apps/ 
-    ├── command-service/ # Serviço de escrita (Laravel) 
-    ├── query-service/ # Serviço de leitura (Laravel) 
-├── docker-compose.yml # Orquestração Docker 
-├── .Docke
+apps/ #
+
+    ├── command-service/ # Serviço de escrita (Laravel) #
+
+    ├── query-service/ # Serviço de leitura (Laravel) #
+
+├── docker-compose.yml # Orquestração Docker #
+
+├── .DockerFile #
+
 ├── README.md # Este arquivo
 
 
