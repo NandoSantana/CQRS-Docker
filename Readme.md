@@ -64,8 +64,19 @@ php artisan migrate
 cd command-service 
 php artisan migrate
 
+# Dentro da pasta command-service do container que recebe os dados de command-service 
+── php artisan test 
+
 # Dentro da pasta query-service do container que recebe os dados de command-service 
 ── php artisan consume:transactions
 
-# Dentro da pasta command-service do container que recebe os dados de command-service 
-── php artisan test
+
+# Rotas 
+[POST] http://localhost/api/command/deposit -> Body:JSON {"user_id":1, "amount":700} # 1 ou 2
+[POST] http://localhost/api/command/transfer -> Body:JSON {"payer_id":1, "payee_id":2, "amount":50}
+
+# Rotas de consulta
+http://localhost:81/api/wallet/1/balance usuario 1 ou 2 
+
+
+

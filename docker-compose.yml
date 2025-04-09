@@ -7,8 +7,12 @@ services:
     restart: always
     ports:
       - "80:80"
+      - "81:81"
     volumes:
+      # - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx/nginx-test.conf:/etc/nginx/nginx.conf:ro
+
     depends_on:
       - command-service
       - query-service
@@ -66,6 +70,7 @@ services:
       - cqrs-network
     ports:
       - "8002:9000"
+      # - "81:80"
     volumes:
       - ./apps/query-service:/var/www/query-service
       - ./apps/query-service/storage:/var/www/query-service/storage
