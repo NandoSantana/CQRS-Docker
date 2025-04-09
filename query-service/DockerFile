@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libzip-dev \
+    netcat-traditional \
+    zip \
     unzip \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -26,6 +28,12 @@ COPY . /var/www
 
 # Instalar dependências do Laravel
 # RUN composer install --no-dev --optimize-autoloader
+
+# Garante que o script tenha permissão de execução
+# RUN chmod +x ../../apps/query-service/entrypoint.sh
+
+# Define o entrypoint
+# ENTRYPOINT ["../../apps/query-service/entrypoint.sh"]
 
 # Expor a porta do PHP-FPM
 EXPOSE 9000

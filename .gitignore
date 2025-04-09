@@ -1,0 +1,5 @@
+apps/commad-service/
+apps/query-service/
+apps/commad-service/vendor
+apps/query-service/vendor
+
