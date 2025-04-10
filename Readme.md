@@ -73,7 +73,8 @@ php artisan migrate
 
 # Rotas 
 [POST] http://localhost/api/command/deposit -> Body:JSON {"user_id":1, "amount":700} # 1 ou 2
-[POST] http://localhost/api/command/transfer -> Body:JSON {"payer_id":1, "payee_id":2, "amount":50}
+[POST] http://localhost/api/command/transfer -> Body:JSON {"payer_id":1, "payee_id":2, 
+"amount":50}
 
 # Rotas de consulta
 [GET] http://localhost:81/api/wallet/1/balance # usuario 1 ou 2 
